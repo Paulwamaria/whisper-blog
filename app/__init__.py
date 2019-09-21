@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from config import config_options
 
 
 
@@ -8,10 +9,11 @@ bootstrap = Bootstrap()
 def create_app():
     app=Flask(__name__)
 
-    app.init_from_object(config_options['development'])
+
+    app.config.from_object(config_options['development'])
     bootstrap.init_app(app)
 
-    from main import main as main_blueprint
+    from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
 

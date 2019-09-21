@@ -1,14 +1,17 @@
 class Config:
     pass
 
+
 class ProdConfig(Config):
     pass
 
+
 class DevConfig(Config):
 
-    DEBUGG=True
+    DEBUG = True
 
-config_options={
-    'production':ProdConfig
-    'development':DevConfig
+
+config_options = {
+    'development': DevConfig,
+    'production': ProdConfig
 }
