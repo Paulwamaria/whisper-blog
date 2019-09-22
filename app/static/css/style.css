@@ -83,3 +83,8 @@ a.article-title:hover {
 .list-group-item{
     background-color: rgba(0, 0, 0, 0.5);
 }
+.auth-forms{
+    margin-top: 200px;
+    color:white;
+    background-color: rgba(0, 0, 0, 0.5);
+}
