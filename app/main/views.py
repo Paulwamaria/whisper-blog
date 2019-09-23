@@ -1,27 +1,14 @@
 from . import main
+from ..models import User,Post
 from flask_login import login_required
 from flask import render_template, redirect, url_for
-posts = [
-    {
-        'author': 'Paul Wamaria',
-        'title': 'Blog Post1',
-        'content': 'First Post Content',
-        'date_posted': 'September 20, 2019'
-    },
-    {
-        'author': 'Wincott Wamaria',
-        'title': 'Blog Post2',
-        'content': 'Second Post Content',
-        'date_posted': 'September 21, 2019'
-    }
 
-]
 
 @main.route('/')
 def index():
     message = "Welcome to Whisper Blogers"
 
-
+    posts=Post.query.all()
 
     return render_template('index.html', message=message, posts=posts)
 
