@@ -3,6 +3,7 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash 
 from flask_login import UserMixin
 from . import login_manager
+import requests
 
 
 class User(UserMixin,db.Model):
@@ -52,3 +53,14 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}','{self.date_posted}')"
+
+
+class Quote(db.Model):
+    __tablename__ = 'quotes'
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(255),nullable=False)
+    quote = db.Column(db.String(255), nullable=False)
+    quote_id = db.Column(db.Integer, nullable=False)
+   
+    def __repr__(self):
+        return f"Quote('{self.quote}','{self.author}')"
