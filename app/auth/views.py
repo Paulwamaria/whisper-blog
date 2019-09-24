@@ -9,7 +9,7 @@ from .. import db,bcrypt
 from flask_login import login_user,logout_user,login_required,current_user
 
 
-app=create_app('production')
+app=create_app('development')
 
 @auth.route('/register', methods=['GET',"POST"])
 def register():
