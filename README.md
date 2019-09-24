@@ -35,7 +35,7 @@ As a writer, I would like to delete comments that I find  insulting or degrading
 
 ## Installation 
 
-* Clone the repo from this link 
+* Clone the repo from this link https://github.com/Paulwamaria/whisper-blog.git
 * Install python3.6
 * Install the requirements as per the requirements.txt
 * Use the command ./start.sh to run the application locally
