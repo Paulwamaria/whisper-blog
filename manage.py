@@ -6,7 +6,7 @@ from config import config_options
 
 
 
-app=create_app()
+app=create_app('production')
 migrate = Migrate(app,db)
 
 manager=Manager(app)
