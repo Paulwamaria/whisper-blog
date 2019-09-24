@@ -1,4 +1,4 @@
-import secrets,os
+import secrets,os,requests
 from app import create_app
 from flask import render_template,redirect,url_for
 from . import auth
@@ -13,6 +13,10 @@ app=create_app()
 
 @auth.route('/register', methods=['GET',"POST"])
 def register():
+    quote_data = requests.get('http://quotes.stormconsultancy.co.uk/random.json' ).json()
+    quote_content= quote_data.get('quote')
+    quote_author= quote_data.get('author')
+    
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = RegistrationForm()
@@ -29,12 +33,16 @@ def register():
 
 
 
-    return render_template('auth/register.html',title="Register",registration_form =form )
+    return render_template('auth/register.html',title="Register",registration_form =form,quote=quote_content,author=quote_author )
 
 
 
 @auth.route('/login',methods=["GET","POST"])
 def login():
+    quote_data = requests.get('http://quotes.stormconsultancy.co.uk/random.json' ).json()
+    quote_content= quote_data.get('quote')
+    quote_author= quote_data.get('author')
+    
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     form = LoginForm()
@@ -46,7 +54,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('main.index'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('auth/login.html', title='Login', form=form)
+    return render_template('auth/login.html', title='Login', form=form,quote=quote_content, author=quote_author)
 
 @auth.route('/logout')
 @login_required
@@ -67,6 +75,10 @@ def save_picture(form_picture):
 @auth.route('/account', methods=['GET','POST'])
 @login_required
 def account():
+    quote_data = requests.get('http://quotes.stormconsultancy.co.uk/random.json' ).json()
+    quote_content= quote_data.get('quote')
+    quote_author= quote_data.get('author')
+    
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -84,12 +96,16 @@ def account():
         form.email.data = current_user.email
 
     image_file=url_for('static', filename='images/' + current_user.image_file)
-    return render_template('auth/account.html',title='Account', image_file = image_file, update_form = form )
+    return render_template('auth/account.html',title='Account', image_file = image_file, update_form = form,quote=quote_content,author=quote_author )
 
 
 @auth.route('/post/new', methods = ['GET', 'POST'])
 @login_required
 def new_post():
+    quote_data = requests.get('http://quotes.stormconsultancy.co.uk/random.json' ).json()
+    quote_content= quote_data.get('quote')
+    quote_author= quote_data.get('author')
+    
     form = PostForm()
     if form.validate_on_submit():
         post=Post(title=form.title.data,content = form.content.data,author=current_user)
@@ -97,7 +113,7 @@ def new_post():
         db.session.commit()
         flash('Your post has been created','success')
         return redirect(url_for('main.index'))
-    return render_template('create_post.html', title =' New Post',post_form=form, legend='New post')
+    return render_template('create_post.html', title =' New Post',post_form=form, legend='New post',quote=quote_content,author=quote_author)
 
 @auth.route('/post/<int:post_id>')
 def post(post_id):
@@ -107,6 +123,10 @@ def post(post_id):
 
 @auth.route('/post/<int:post_id>/update',methods= ['GET','POST'])
 def update_post(post_id):
+    quote_data = requests.get('http://quotes.stormconsultancy.co.uk/random.json' ).json()
+    quote_content= quote_data.get('quote')
+    quote_author= quote_data.get('author')
+
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
@@ -120,7 +140,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html',post=post, legend = 'Update Post',post_form=form) 
+    return render_template('create_post.html',post=post, legend = 'Update Post',post_form=form,quote=quote_content,author=quote_author) 
 
 
 @auth.route('/post/<int:post_id>/delete',methods= ['GET','POST'])
